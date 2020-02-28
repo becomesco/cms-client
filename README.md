@@ -1,6 +1,6 @@
 # Becomes CMS client library
 
-This library was written to enable easy connectivity with [Becomes CMS](https://github.com/becomes/cms).
+This library was written to enable easy connectivity with [Becomes CMS](https://github.com/becomesco/cms).
 
 [![npm](https://nodei.co/npm/@becomes/cms-client.png)](https://www.npmjs.com/package/@becomes/cms-client)
 
@@ -78,3 +78,38 @@ const query = await client
 ```
 
 ## Gatsby Example
+
+```js
+// gatsby-node.js
+
+const { BCMSClient } = require('@becomes/cms-client');
+const client = new BCMSClient(
+  process.env.API_ORIGIN,
+  {
+    id: process.env.API_KEY,
+    secret: process.env.API_SECRET,
+  },
+  false,
+);
+let myEntries = [];
+
+module.exports.onCreateNode = async ({ node }) => {
+  if (node.internal.type === 'Site') {
+    myEntries = await client
+      .template('__TEMPLATE_ID__')
+      .entry()
+      .getAllParsed();
+  }
+};
+
+module.exports.createPages = async ({ graphql, actions }) => {
+  const myEntriesPageTemplate = path.resolve('./path/to/template/file.js');
+  createPage({
+    component: checkoutTemplate,
+    path: `/my-entries`,
+    context: {
+      entires: myEntries,
+    },
+  });
+};
+```

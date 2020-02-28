@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { BCMSSecurity } from './security';
 import {
   BCMSAxios,
@@ -18,10 +18,7 @@ export class AxiosHelper {
         config: BCMSAxiosConfig,
       ): Promise<BCMSAxiosConfig> => {
         const signature = BCMSSecurity.sign(
-          {
-            id: key.id,
-            secret: key.secret,
-          },
+          key,
           typeof config.data === 'undefined' ? {} : config.data,
         );
         if (!config.queries) {

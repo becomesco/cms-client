@@ -1,6 +1,6 @@
 {
   "name": "@becomes/cms-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility for Becomes CMS used for client side implementation.",
   "author": "becomes.co",
   "license": "MIT",
@@ -38,12 +38,6 @@
     "type": "git",
     "url": "git+https://github.com/becomesco/cms-client.git"
   },
-  "bin": {
-    "bcms-client": "bin/bcms-client.js"
-  },
-  "keywords": [
-    "bcms-client"
-  ],
   "bugs": {
     "url": "https://github.com/becomesco/cms-client/issues"
   },

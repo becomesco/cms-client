@@ -17,7 +17,7 @@ export class BCMSSecurity {
     }
     data.signature = crypto
       .HmacSHA256(
-        data.nonce + data.timestamp + data.key + payloadAsString,
+        data.nonce + data.timestamp + key.id + payloadAsString,
         key.secret,
       )
       .toString();
