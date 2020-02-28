@@ -1,0 +1,51 @@
+{
+  "name": "@becomes/cms-client",
+  "version": "1.0.0",
+  "description": "Utility for Becomes CMS used for client side implementation.",
+  "author": "becomes.co",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "link": "cd dist && npm link",
+    "unlink": "cd dist && npm uplink",
+    "test": "env-cmd mocha ./test --recursive --exit"
+  },
+  "dependencies": {
+    "arg": "^4.1.2",
+    "axios": "^0.19.1",
+    "crypto-js": "^3.1.9-1",
+    "uuid": "^3.3.3",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/crypto-js": "^3.1.43",
+    "@types/node": "^12.12.24",
+    "@types/uuid": "^3.4.6",
+    "@types/yamljs": "^0.2.30",
+    "autoprefixer": "^9.7.1",
+    "chai": "^4.2.0",
+    "env-cmd": "^10.0.1",
+    "mocha": "^7.1.0",
+    "ts-node": "^8.6.1",
+    "tsconfig-paths": "^3.9.0",
+    "tslint": "^5.20.1",
+    "typedoc": "^0.15.8",
+    "typescript": "^3.7.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/becomesco/cms-client.git"
+  },
+  "bin": {
+    "bcms-client": "bin/bcms-client.js"
+  },
+  "keywords": [
+    "bcms-client"
+  ],
+  "bugs": {
+    "url": "https://github.com/becomesco/cms-client/issues"
+  },
+  "homepage": "https://github.com/becomesco/cms-client#readme"
+}
