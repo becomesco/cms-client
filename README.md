@@ -15,7 +15,7 @@ import { BCMSClient } from '@becomes/cms-client';
 
 async function main() {
   // Create new instance of a Client.
-  const client = new BCMSClient(
+  const client = await BCMSClient.instance(
     process.env.API_ORIGIN,
     {
       id: process.env.API_KEY,
@@ -77,24 +77,43 @@ const query = await client
   .getAllParsed();
 ```
 
+> Get all Media
+
+```ts
+const query = await client.media.all();
+```
+
+> Get Media
+
+```ts
+const query = await client.media.get('/path/to/file');
+```
+
+> Call a function
+
+```ts
+const query = await client.fn('__FUNCTION_NAME__');
+```
+
 ## Gatsby Example
 
 ```js
 // gatsby-node.js
 
 const { BCMSClient } = require('@becomes/cms-client');
-const client = new BCMSClient(
-  process.env.API_ORIGIN,
-  {
-    id: process.env.API_KEY,
-    secret: process.env.API_SECRET,
-  },
-  false,
-);
-let myEntries = [];
+let client;
 
 module.exports.onCreateNode = async ({ node }) => {
   if (node.internal.type === 'Site') {
+    client = await BCMSClient.instance(
+      process.env.API_ORIGIN,
+      {
+        id: process.env.API_KEY,
+        secret: process.env.API_SECRET,
+      },
+      false,
+    );
+    let myEntries = [];
     myEntries = await client
       .template('__TEMPLATE_ID__')
       .entry()

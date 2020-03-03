@@ -1,5 +1,5 @@
 import { BCMSEntry } from './interfaces/entry.interface';
-import { Key } from './interfaces/key';
+import { Key, KeyAccess } from './interfaces/key';
 import { BCMSAxios, BCMSAxiosResponse } from './interfaces/axios.interface';
 import { AxiosHelper } from './axios-helper';
 
@@ -13,7 +13,26 @@ export class BCMSEntryRequest {
   async get(
     templateId: string,
     id: string,
+    keyAccess: KeyAccess,
   ): Promise<BCMSEntry | BCMSAxiosResponse> {
+    if (keyAccess) {
+      const templateAccess = keyAccess.templates.find(
+        e => e._id === templateId,
+      );
+      if (!templateAccess) {
+        throw new Error(
+          `Provided API Key is not authorized to access ` +
+            `Template "${templateId}".`,
+        );
+      } else {
+        if (!templateAccess.entry.methods.find(e => e === 'GET')) {
+          throw new Error(
+            `Provided API Key is not authorized to access ` +
+              `Entry "${id}" in Template "${templateId}".`,
+          );
+        }
+      }
+    }
     if (this.useGQL === true) {
       return;
     } else {
@@ -30,7 +49,26 @@ export class BCMSEntryRequest {
   async getParsed(
     templateId: string,
     id: string,
+    keyAccess: KeyAccess,
   ): Promise<any | BCMSAxiosResponse> {
+    if (keyAccess) {
+      const templateAccess = keyAccess.templates.find(
+        e => e._id === templateId,
+      );
+      if (!templateAccess) {
+        throw new Error(
+          `Provided API Key is not authorized to access ` +
+            `Template "${templateId}".`,
+        );
+      } else {
+        if (!templateAccess.entry.methods.find(e => e === 'GET')) {
+          throw new Error(
+            `Provided API Key is not authorized to access ` +
+              `Entry "${id}" in Template "${templateId}".`,
+          );
+        }
+      }
+    }
     if (this.useGQL === true) {
       return;
     } else {
@@ -44,7 +82,28 @@ export class BCMSEntryRequest {
       return result;
     }
   }
-  async getAll(templateId: string): Promise<BCMSEntry[] | BCMSAxiosResponse> {
+  async getAll(
+    templateId: string,
+    keyAccess: KeyAccess,
+  ): Promise<BCMSEntry[] | BCMSAxiosResponse> {
+    if (keyAccess) {
+      const templateAccess = keyAccess.templates.find(
+        e => e._id === templateId,
+      );
+      if (!templateAccess) {
+        throw new Error(
+          `Provided API Key is not authorized to access ` +
+            `Template "${templateId}".`,
+        );
+      } else {
+        if (!templateAccess.entry.methods.find(e => e === 'GET')) {
+          throw new Error(
+            `Provided API Key is not authorized to access ` +
+              `GET_ALL Entries method in Template "${templateId}".`,
+          );
+        }
+      }
+    }
     if (this.useGQL === true) {
       return;
     } else {
@@ -58,7 +117,28 @@ export class BCMSEntryRequest {
       return result;
     }
   }
-  async getAllParsed(templateId: string): Promise<any | BCMSAxiosResponse> {
+  async getAllParsed(
+    templateId: string,
+    keyAccess: KeyAccess,
+  ): Promise<any | BCMSAxiosResponse> {
+    if (keyAccess) {
+      const templateAccess = keyAccess.templates.find(
+        e => e._id === templateId,
+      );
+      if (!templateAccess) {
+        throw new Error(
+          `Provided API Key is not authorized to access ` +
+            `Template "${templateId}".`,
+        );
+      } else {
+        if (!templateAccess.entry.methods.find(e => e === 'GET')) {
+          throw new Error(
+            `Provided API Key is not authorized to access ` +
+              `GET_ALL Entries method in Template "${templateId}".`,
+          );
+        }
+      }
+    }
     if (this.useGQL === true) {
       return;
     } else {

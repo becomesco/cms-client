@@ -1,18 +1,20 @@
 const chai = require('chai');
 const expect = chai.expect;
 const { BCMSClient } = require('../dist');
-const restClient = new BCMSClient(
-  process.env.API_ORIGIN,
-  {
-    id: process.env.API_KEY,
-    secret: process.env.API_SECRET,
-  },
-  false,
-);
+
+let restClient;
 
 describe('REST Client', () => {
   it('Get Template', async () => {
-    const result = await restClient.template('5e29a5d0bea94e001211b0a2').get();
+    restClient = await BCMSClient.instance(
+      process.env.API_ORIGIN,
+      {
+        id: process.env.API_KEY,
+        secret: process.env.API_SECRET,
+      },
+      false,
+    );
+    const result = await restClient.template('5e4283b2dc14c94bc68cb1bf').get();
     expect(result).to.have.property('entryTemplate');
     expect(result)
       .to.have.property('entryIds')
@@ -27,8 +29,8 @@ describe('REST Client', () => {
   });
   it('Get Entry', async () => {
     const result = await restClient
-      .template('5e29a5d0bea94e001211b0a2')
-      .entry('5e2adb5e0d06e25fb4cabd59')
+      .template('5e4283b2dc14c94bc68cb1bf')
+      .entry('5e4a79158397cf2695f950f5')
       .get();
     expect(result)
       .to.have.property('content')
@@ -51,8 +53,8 @@ describe('REST Client', () => {
   });
   it('Get parsed Entry', async () => {
     const result = await restClient
-      .template('5e29a5d0bea94e001211b0a2')
-      .entry('5e2adb5e0d06e25fb4cabd59')
+      .template('5e4283b2dc14c94bc68cb1bf')
+      .entry('5e4a79158397cf2695f950f5')
       .getParsed();
     expect(result).to.have.property('en');
     expect(result).to.have.nested.property('en.meta');
@@ -71,7 +73,7 @@ describe('REST Client', () => {
   });
   it('Get all Entries', async () => {
     const result = await restClient
-      .template('5e29a5d0bea94e001211b0a2')
+      .template('5e4283b2dc14c94bc68cb1bf')
       .entry()
       .getAll();
     expect(result).to.be.a('array');
@@ -96,7 +98,7 @@ describe('REST Client', () => {
   });
   it('Get all parsed Entries', async () => {
     const result = await restClient
-      .template('5e29a5d0bea94e001211b0a2')
+      .template('5e4283b2dc14c94bc68cb1bf')
       .entry()
       .getAllParsed();
     expect(result).to.be.a('array');
@@ -114,5 +116,93 @@ describe('REST Client', () => {
     expect(result[0])
       .to.have.nested.property('en.content')
       .to.be.a('array');
+  });
+  it('Get all Media', async () => {
+    const result = await restClient.media.all();
+    expect(result).to.be.a('array');
+    expect(result[0])
+      .to.have.property('file')
+      .to.be.a('object');
+    expect(result[0])
+      .to.have.property('bin')
+      .to.be.a('function');
+    expect(result[0].file)
+      .to.have.property('childrenIds')
+      .to.be.a('array');
+    expect(result[0].file)
+      .to.have.property('_id')
+      .to.be.a('string');
+    expect(result[0].file)
+      .to.have.property('createdAt')
+      .to.be.a('number');
+    expect(result[0].file)
+      .to.have.property('updatedAt')
+      .to.be.a('number');
+    expect(result[0].file)
+      .to.have.property('userId')
+      .to.be.a('string');
+    expect(result[0].file)
+      .to.have.property('type')
+      .to.be.a('string');
+    expect(result[0].file)
+      .to.have.property('mimetype')
+      .to.be.a('string');
+    expect(result[0].file)
+      .to.have.property('name')
+      .to.be.a('string');
+    expect(result[0].file)
+      .to.have.property('path')
+      .to.be.a('string');
+    expect(result[0].file)
+      .to.have.property('isInRoot')
+      .to.be.a('boolean');
+  });
+  it('Get Media', async () => {
+    const result = await restClient.media.get(
+      '/case-studies/airbus/airbus.png',
+    );
+    expect(result).to.be.a('object');
+    expect(result)
+      .to.have.property('file')
+      .to.be.a('object');
+    expect(result)
+      .to.have.property('bin')
+      .to.be.a('function');
+    expect(result.file)
+      .to.have.property('childrenIds')
+      .to.be.a('array');
+    expect(result.file)
+      .to.have.property('_id')
+      .to.be.a('string');
+    expect(result.file)
+      .to.have.property('createdAt')
+      .to.be.a('number');
+    expect(result.file)
+      .to.have.property('updatedAt')
+      .to.be.a('number');
+    expect(result.file)
+      .to.have.property('userId')
+      .to.be.a('string');
+    expect(result.file)
+      .to.have.property('type')
+      .to.be.a('string');
+    expect(result.file)
+      .to.have.property('mimetype')
+      .to.be.a('string');
+    expect(result.file)
+      .to.have.property('name')
+      .to.be.a('string');
+    expect(result.file)
+      .to.have.property('path')
+      .to.be.a('string');
+    expect(result.file)
+      .to.have.property('isInRoot')
+      .to.be.a('boolean');
+    const bin = await result.bin();
+    expect(bin).to.be.an.instanceof(Buffer);
+  });
+  it('Call Function', async () => {
+    const result = await restClient.fn('test');
+    expect(result).to.be.a('string');
   });
 });
