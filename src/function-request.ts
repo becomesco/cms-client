@@ -10,11 +10,7 @@ export class BCMSFunctionRequest {
     }
   }
 
-  async execute(
-    name: string,
-    keyAccess: KeyAccess,
-    data?: any,
-  ): Promise<any | BCMSAxiosResponse> {
+  async execute(name: string, keyAccess: KeyAccess, data?: any): Promise<any> {
     if (keyAccess) {
       if (!keyAccess.functions.find(e => e.name === name)) {
         throw new Error(
@@ -33,7 +29,7 @@ export class BCMSFunctionRequest {
       if (result.success === true) {
         return result.response.data.result;
       }
-      return result;
+      throw result;
     }
   }
 }

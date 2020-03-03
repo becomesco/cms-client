@@ -1,7 +1,7 @@
 import { Key, KeyAccess } from './interfaces/key';
 import { BCMSTemplateRequest } from './template-request';
 import { BCMSEntryRequest } from './entry-request';
-import { BCMSEntry } from './interfaces/entry.interface';
+import { BCMSEntry, BCMSEntryContent } from './interfaces/entry.interface';
 import { BCMSMediaRequest } from './media-request';
 import { BCMSAxiosResponse, BCMSMedia } from './interfaces';
 import { AxiosHelper } from './axios-helper';
@@ -82,17 +82,30 @@ export class BCMSClient {
               this.keyAccess,
             );
           },
-          add: async (entry: BCMSEntry) => {
-            return await this.bcmsTemplate.entry.add(id, entry);
+          add: async (entryContent: BCMSEntryContent[]) => {
+            return await this.bcmsTemplate.entry.add(
+              id,
+              entryContent,
+              this.keyAccess,
+            );
           },
-          update: async (entry: BCMSEntry) => {
-            return await this.bcmsTemplate.entry.update(id, entry);
+          update: async (entryContent: BCMSEntryContent[]) => {
+            return await this.bcmsTemplate.entry.update(
+              id,
+              entryId,
+              entryContent,
+              this.keyAccess,
+            );
           },
           remove: async () => {
             if (typeof entryId !== 'string') {
               throw new Error('"entryId" is required');
             }
-            return await this.bcmsTemplate.entry.remove(id, entryId);
+            return await this.bcmsTemplate.entry.remove(
+              id,
+              entryId,
+              this.keyAccess,
+            );
           },
         };
       },
@@ -101,17 +114,13 @@ export class BCMSClient {
 
   public media = {
     all: async (): Promise<
-      | BCMSAxiosResponse
-      | Array<{
-          file: BCMSMedia;
-          bin: () => Promise<BCMSAxiosResponse | Buffer>;
-        }>
+      Array<{
+        file: BCMSMedia;
+        bin: () => Promise<Buffer>;
+      }>
     > => {
       const files = await this.mediaRequest.getAll();
-      if ((files as BCMSAxiosResponse).success === false) {
-        return files as BCMSAxiosResponse;
-      }
-      return (files as BCMSMedia[]).map(file => {
+      return files.map(file => {
         return {
           file,
           bin: async () => {
@@ -125,20 +134,13 @@ export class BCMSClient {
     },
     get: async (
       path: string,
-    ): Promise<
-      | BCMSAxiosResponse
-      | {
-          file: BCMSMedia;
-          bin: () => Promise<BCMSAxiosResponse | Buffer>;
-        }
-    > => {
+    ): Promise<{
+      file: BCMSMedia;
+      bin: () => Promise<Buffer>;
+    }> => {
       const file = await this.mediaRequest.get(path);
-
-      if ((file as BCMSAxiosResponse).success === false) {
-        return file as BCMSAxiosResponse;
-      }
       return {
-        file: file as BCMSMedia,
+        file,
         bin: async () => {
           return await this.mediaRequest.getBin(path);
         },

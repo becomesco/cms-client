@@ -99,7 +99,6 @@ const query = await client.fn('__FUNCTION_NAME__');
 
 ```js
 // gatsby-node.js
-
 const { BCMSClient } = require('@becomes/cms-client');
 let client;
 
@@ -131,4 +130,104 @@ module.exports.createPages = async ({ graphql, actions }) => {
     },
   });
 };
+```
+
+## Pull and save Media
+
+Since media uploaded via [Becomes CMS]() is not publicly available, CMS consumer application must pull, save and serve media itself. Pulling and saving can be done by CMS Client API (this repository) as shown in the snippets bellow.
+
+### All Media
+
+```js
+// pull-media.js
+const util = require('util');
+const path = require('path');
+const fs = require('fs');
+const { BCMSClient } = require('@becomes/cms-client');
+const basePath = path.join(__dirname, 'media');
+
+async function save(data, root) {
+  const parts = root.split('/');
+  let base = `${basePath}`;
+  for (let j = 0; j < parts.length; j = j + 1) {
+    if (parts[j].indexOf('.') === -1) {
+      base = path.join(base, parts[j]);
+      try {
+        if ((await util.promisify(fs.exists)(base)) === false) {
+          await util.promisify(fs.mkdir)(base);
+        }
+      } catch (error) {
+        console.log(`Failed to create directory '${base}'`);
+      }
+    }
+  }
+  await util.promisify(fs.writeFile)(
+    path.join(base, parts[parts.length - 1]),
+    data,
+  );
+}
+
+async function main() {
+  client = await BCMSClient.instance(
+    process.env.API_ORIGIN,
+    {
+      id: process.env.API_KEY,
+      secret: process.env.API_SECRET,
+    },
+    false,
+  );
+  const media = await client.media.all();
+  media.forEach(async e => {
+    const bin = await e.bin();
+    await save(bin, `${e.file.path}/${e.file.name}`);
+  });
+}
+main();
+```
+
+### Single Media
+
+```js
+// pull-media.js
+const util = require('util');
+const path = require('path');
+const fs = require('fs');
+const { BCMSClient } = require('@becomes/cms-client');
+const basePath = path.join(__dirname, 'media');
+
+async function save(data, root) {
+  const parts = root.split('/');
+  let base = `${basePath}`;
+  for (let j = 0; j < parts.length; j = j + 1) {
+    if (parts[j].indexOf('.') === -1) {
+      base = path.join(base, parts[j]);
+      try {
+        if ((await util.promisify(fs.exists)(base)) === false) {
+          await util.promisify(fs.mkdir)(base);
+        }
+      } catch (error) {
+        console.log(`Failed to create directory '${base}'`);
+      }
+    }
+  }
+  await util.promisify(fs.writeFile)(
+    path.join(base, parts[parts.length - 1]),
+    data,
+  );
+}
+
+async function main() {
+  client = await BCMSClient.instance(
+    process.env.API_ORIGIN,
+    {
+      id: process.env.API_KEY,
+      secret: process.env.API_SECRET,
+    },
+    false,
+  );
+  const media = await client.media.get('/path/to/media');
+  const bin = await media.bin();
+  await save(bin, `${e.file.path}/${e.file.name}`);
+}
+main();
 ```

@@ -9,7 +9,7 @@ export class BCMSMediaRequest {
     }
   }
 
-  async getAll(): Promise<BCMSMedia[] | BCMSAxiosResponse> {
+  async getAll(): Promise<BCMSMedia[]> {
     if (this.useGQL === true) {
       return;
     } else {
@@ -20,11 +20,11 @@ export class BCMSMediaRequest {
       if (result.success === true) {
         return result.response.data.media;
       }
-      return result;
+      throw result;
     }
   }
 
-  async get(path: string): Promise<BCMSMedia | BCMSAxiosResponse> {
+  async get(path: string): Promise<BCMSMedia> {
     if (this.useGQL === true) {
       return;
     } else {
@@ -38,10 +38,10 @@ export class BCMSMediaRequest {
       if (result.success === true) {
         return result.response.data.media;
       }
-      return result;
+      throw result;
     }
   }
-  async getBin(path): Promise<Buffer | BCMSAxiosResponse> {
+  async getBin(path): Promise<Buffer> {
     if (this.useGQL === true) {
       return;
     } else {
@@ -56,7 +56,7 @@ export class BCMSMediaRequest {
       if (result.success === true) {
         return result.response.data;
       }
-      return result;
+      throw result;
     }
   }
 }

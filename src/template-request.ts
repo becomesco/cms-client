@@ -21,7 +21,7 @@ export class BCMSTemplateRequest {
   async get(
     id: string,
     keyAccess: KeyAccess,
-  ): Promise<BCMSTemplate | BCMSAxiosResponse> {
+  ): Promise<BCMSTemplate> {
     if (keyAccess) {
       const templateAccess = keyAccess.templates.find(e => e._id === id);
       if (!templateAccess || !templateAccess.methods.find(e => e === 'GET')) {
@@ -40,7 +40,7 @@ export class BCMSTemplateRequest {
       if (result.success === true) {
         return result.response.data.template;
       }
-      return result;
+      throw result;
     }
   }
 }
