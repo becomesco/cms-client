@@ -249,7 +249,7 @@ export class BCMSEntryRequest {
         method: 'DELETE',
       });
       if (result.success === true) {
-        return result.response.data.entry;
+        return result.response.data.message;
       }
       throw result;
     }
