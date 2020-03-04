@@ -7,7 +7,7 @@ let entryId;
 
 describe('REST Client', async () => {
   describe('Templates', async () => {
-    it('should get a Template and check the response.', async () => {
+    it('should get a Template and check the response', async () => {
       restClient = await BCMSClient.instance(
         process.env.API_ORIGIN,
         {
@@ -31,7 +31,7 @@ describe('REST Client', async () => {
     });
   });
   describe('Entries', async () => {
-    it('should get a single Entry and check the response.', async () => {
+    it('should get a single Entry and check the response', async () => {
       const result = await restClient
         .template(process.env.TEMPLATE_ID)
         .entry(process.env.ENTRY_ID)
@@ -55,7 +55,8 @@ describe('REST Client', async () => {
         .to.have.property('userId')
         .to.be.a('string');
     });
-    it('should get a single Entry with parsed props and check the response.', async () => {
+    it('should get a single Entry with parsed props and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient
         .template(process.env.TEMPLATE_ID)
         .entry(process.env.ENTRY_ID)
@@ -75,7 +76,8 @@ describe('REST Client', async () => {
         .to.have.nested.property('en.content')
         .to.be.a('array');
     });
-    it('should get all Entries and check the response.', async () => {
+    it('should get all Entries and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient
         .template(process.env.TEMPLATE_ID)
         .entry()
@@ -100,7 +102,8 @@ describe('REST Client', async () => {
         .to.have.property('userId')
         .to.be.a('string');
     });
-    it('should get all Entries with parsed props and check the response.', async () => {
+    it('should get all Entries with parsed props and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient
         .template(process.env.TEMPLATE_ID)
         .entry()
@@ -121,7 +124,8 @@ describe('REST Client', async () => {
         .to.have.nested.property('en.content')
         .to.be.a('array');
     });
-    it('should add new Entry and check the response.', async () => {
+    it('should add new Entry and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient
         .template(process.env.TEMPLATE_ID)
         .entry()
@@ -237,7 +241,8 @@ describe('REST Client', async () => {
         .to.be.a('string')
         .to.be.equal('test-2');
     });
-    it('should update an Entry and check the response.', async () => {
+    it('should update an Entry and check the response', async () => {
+      expect(restClient).to.be.a('object');
       expect(entryId).to.be.a('string');
       const result = await restClient
         .template(process.env.TEMPLATE_ID)
@@ -282,17 +287,93 @@ describe('REST Client', async () => {
         .to.be.a('number');
       expect(result)
         .to.have.property('templateId')
-        .to.be.a('string');
+        .to.be.a('string')
+        .to.be.equal(process.env.TEMPLATE_ID);
       expect(result)
         .to.have.property('userId')
         .to.be.a('string');
       expect(result)
         .to.have.property('content')
         .to.be.a('array');
+      expect(result.content[0])
+        .to.have.property('lng')
+        .to.be.a('string')
+        .to.be.equal('en');
+      expect(result.content[0])
+        .to.have.property('props')
+        .to.be.a('array')
+        .to.have.length(2);
+
+      expect(result.content[0].props[0])
+        .to.have.property('name')
+        .to.be.a('string')
+        .to.be.equal('test_string');
+      expect(result.content[0].props[0])
+        .to.have.property('required')
+        .to.be.a('boolean')
+        .to.be.equal(true);
+      expect(result.content[0].props[0])
+        .to.have.property('type')
+        .to.be.a('string')
+        .to.be.equal('STRING');
+      expect(result.content[0].props[0])
+        .to.have.property('value')
+        .to.be.a('string')
+        .to.be.equal('This is test 3.');
+
+      expect(result.content[0].props[1])
+        .to.have.property('name')
+        .to.be.a('string')
+        .to.be.equal('content');
+      expect(result.content[0].props[1])
+        .to.have.property('required')
+        .to.be.a('boolean')
+        .to.be.equal(true);
+      expect(result.content[0].props[1])
+        .to.have.property('type')
+        .to.be.a('string')
+        .to.be.equal('QUILL');
+      expect(result.content[0].props[1])
+        .to.have.property('value')
+        .to.be.a('object');
+      expect(result.content[0].props[1].value)
+        .to.have.property('content')
+        .to.be.a('array');
+      expect(result.content[0].props[1].value)
+        .to.have.property('heading')
+        .to.be.a('object');
+      expect(result.content[0].props[1].value.heading)
+        .to.have.property('coverImageUri')
+        .to.be.a('string')
+        .to.be.equal('');
+      expect(result.content[0].props[1].value.heading)
+        .to.have.property('title')
+        .to.be.a('string')
+        .to.be.equal('Test 3');
+      expect(result.content[0].props[1].value.heading)
+        .to.have.property('desc')
+        .to.be.a('string')
+        .to.be.equal('Desc 3');
+      expect(result.content[0].props[1].value.heading)
+        .to.have.property('slug')
+        .to.be.a('string')
+        .to.be.equal('test-3');
+    });
+    it('should delete an Entry and check the response', async () => {
+      expect(restClient).to.be.a('object');
+      expect(entryId).to.be.a('string');
+      const result = await restClient
+        .template(process.env.TEMPLATE_ID)
+        .entry(entryId)
+        .remove();
+      expect(result)
+        .to.be.a('string')
+        .to.be.equal('Success.');
     });
   });
   describe('Media', async () => {
-    it('should get all Media and check the response.', async () => {
+    it('should get all Media and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient.media.all();
       expect(result).to.be.a('array');
       expect(result[0])
@@ -332,7 +413,8 @@ describe('REST Client', async () => {
         .to.have.property('isInRoot')
         .to.be.a('boolean');
     });
-    it('should get a single Media and check the response.', async () => {
+    it('should get a single Media and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient.media.get(
         '/case-studies/airbus/airbus.png',
       );
@@ -378,7 +460,8 @@ describe('REST Client', async () => {
     });
   });
   describe('Functions', async () => {
-    it('should make a call to a Function and check the response.', async () => {
+    it('should make a call to a Function and check the response', async () => {
+      expect(restClient).to.be.a('object');
       const result = await restClient.fn('test');
       expect(result).to.be.a('string');
     });
