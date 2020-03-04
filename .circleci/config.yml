@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-and-test:
     docker:
       - image: circleci/node:10.16
     working_directory: ~/repo
@@ -23,3 +23,11 @@ jobs:
       - run:
           name: "Run tests"
           command: npm run test
+workflows:
+  version: 2
+  staging:
+    jobs: 
+    - build-and-test:
+        filters:
+          branches:
+            only: master
