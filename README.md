@@ -2,7 +2,7 @@
 
 This library was written to enable easy connectivity with [Becomes CMS](https://github.com/becomesco/cms).
 
-[![Build Status](https://travis-ci.org/becomesco/cms-client.svg?branch=dev)](https://travis-ci.org/becomesco/cms-client)
+[![CircleCI](https://circleci.com/gh/becomesco/cms-client/tree/master.svg?style=svg)](https://circleci.com/gh/becomesco/cms-client/tree/master)
 
 [![npm](https://nodei.co/npm/@becomes/cms-client.png)](https://www.npmjs.com/package/@becomes/cms-client)
 
