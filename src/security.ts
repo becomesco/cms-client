@@ -11,10 +11,12 @@ export class BCMSSecurity {
     };
     let payloadAsString = '';
     if (typeof payload === 'object') {
-      if (window && window.btoa) {
+      if (typeof window !== 'undefined' && typeof window.btoa !== 'undefined') {
         payloadAsString = window.btoa(JSON.stringify(payload));
       } else {
-        payloadAsString = Buffer.from(JSON.stringify(payload)).toString('base64');
+        payloadAsString = Buffer.from(JSON.stringify(payload)).toString(
+          'base64',
+        );
       }
     } else {
       payloadAsString = '' + payload;
