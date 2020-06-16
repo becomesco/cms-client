@@ -15,7 +15,7 @@ export class BCMSClient {
     cmsURL: string,
     key: Key,
     useGQL: boolean,
-    private readonly keyAccess: KeyAccess,
+    public readonly keyAccess: KeyAccess,
   ) {
     this.bcmsTemplate = new BCMSTemplateRequest(
       cmsURL,
