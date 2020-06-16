@@ -1,6 +1,6 @@
 {
   "name": "@becomes/cms-client",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "Utility for Becomes CMS used for client side implementation.",
   "author": "becomes.co",
   "license": "MIT",
