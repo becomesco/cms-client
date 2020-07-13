@@ -1,6 +1,6 @@
 {
   "name": "@becomes/cms-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Utility for Becomes CMS used for client side implementation.",
   "author": "becomes.co",
   "license": "MIT",
@@ -16,14 +16,12 @@
     "arg": "^4.1.2",
     "axios": "^0.19.1",
     "crypto-js": "^3.1.9-1",
-    "js-base64": "^2.6.3",
     "uuid": "^3.3.3",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/crypto-js": "^3.1.47",
-    "@types/js-base64": "^2.3.2",
     "@types/node": "^12.12.50",
     "@types/uuid": "^3.4.9",
     "@types/yamljs": "^0.2.31",
