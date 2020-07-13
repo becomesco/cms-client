@@ -1,4 +1,5 @@
 import * as crypto from 'crypto-js';
+import { Base64 } from 'js-base64';
 import { Key, KeySignature } from './interfaces/key';
 
 export class BCMSSecurity {
@@ -11,8 +12,9 @@ export class BCMSSecurity {
     };
     let payloadAsString = '';
     if (typeof payload === 'object') {
-      if (typeof window !== 'undefined' && typeof window.btoa !== 'undefined') {
-        payloadAsString = window.btoa(JSON.stringify(payload));
+      if (typeof window !== 'undefined') {
+        payloadAsString = Base64.btoa(JSON.stringify(payload));
+        // payloadAsString = window.btoa(JSON.stringify(payload));
       } else {
         payloadAsString = Buffer.from(JSON.stringify(payload)).toString(
           'base64',
