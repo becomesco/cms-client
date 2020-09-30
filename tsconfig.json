@@ -12,8 +12,17 @@
     "incremental": true
   },
   "typedocOptions": {
+    "name": "GetCV | SDK",
+    "theme": "./node_modules/typedoc-neo-theme/bin/default",
+    "plugin": "typedoc-neo-theme",
     "mode": "file",
-    "out": "typedoc"
+    "out": "doc",
+    "outline": [
+      {
+        "BCMSClient": "interfaces/bcmsclientprototype"
+      }
+    ]
   },
+  "include": ["src"],
   "exclude": ["node_modules", "dist", "public", "lib"]
 }
