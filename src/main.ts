@@ -63,6 +63,7 @@ function bcmsClient(config: {
         url: conf.url,
         method: conf.method,
         headers: conf.headers,
+        responseType: conf.responseType,
         data: conf.data,
       });
     });
