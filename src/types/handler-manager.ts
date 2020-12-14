@@ -2,6 +2,7 @@ import {
   BCMSEntryHandlerPrototype,
   BCMSFunctionHandlerPrototype,
   BCMSMediaHandlerPrototype,
+  BCMSSocketHandlerPrototype,
   BCMSTemplateHandlerPrototype,
 } from '../handlers';
 
@@ -10,4 +11,5 @@ export interface HandlerManager {
   entry: BCMSEntryHandlerPrototype;
   media: BCMSMediaHandlerPrototype;
   function: BCMSFunctionHandlerPrototype;
+  socket: BCMSSocketHandlerPrototype;
 }

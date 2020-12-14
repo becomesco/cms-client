@@ -2,6 +2,7 @@ import {
   BCMSEntryHandler,
   BCMSFunctionHandler,
   BCMSMediaHandler,
+  BCMSSocketHandler,
   BCMSTemplateHandler,
 } from './handlers';
 import { ApiKey, ApiKeyAccess, ApiKeySignature } from './types';
@@ -89,6 +90,7 @@ function bcmsClient(config: {
     entry: BCMSEntryHandler(getKeyAccess, send),
     media: BCMSMediaHandler(send),
     function: BCMSFunctionHandler(getKeyAccess, send),
+    socket: BCMSSocketHandler(security),
   };
   return {
     ...handlerManger,
