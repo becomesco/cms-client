@@ -1,5 +1,5 @@
 import * as crypto from 'crypto-js';
-import { ApiKey, ApiKeySignature } from 'src/types';
+import { ApiKey, ApiKeySignature } from '../types';
 
 export interface SecurityPrototype {
   sign(payload: any): ApiKeySignature;

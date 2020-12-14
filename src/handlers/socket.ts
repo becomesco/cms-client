@@ -1,5 +1,5 @@
 import * as io from 'socket.io-client';
-import { SocketEventData, SocketEventName } from 'src/types';
+import { SocketEventData, SocketEventName } from '../types';
 import * as uuid from 'uuid';
 import { SecurityPrototype } from '../util';
 
