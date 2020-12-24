@@ -53,7 +53,7 @@ export function BCMSSocketHandler(security: SecurityPrototype) {
               console.log('Disconnected from Socket server.');
             });
             Object.keys(SocketEventName).forEach((eventName) => {
-              socket.on(eventName, (data) => {
+              socket.on(SocketEventName[eventName], (data) => {
                 handlers.forEach((handler) => {
                   handler.handler(SocketEventName[eventName], data);
                 });
