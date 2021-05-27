@@ -1,4 +1,4 @@
-import * as io from 'socket.io-client';
+import SocketIO, {Socket} from 'socket.io-client';
 import { SocketEventData, SocketEventName } from '../types';
 import * as uuid from 'uuid';
 import { SecurityPrototype } from '../util';
@@ -12,7 +12,7 @@ export interface BCMSSocketHandlerPrototype {
 
 export function BCMSSocketHandler(security: SecurityPrototype) {
   let isConnected = false;
-  let socket: SocketIOClient.Socket;
+  let socket: Socket;
   const handlers: Array<{
     id: string;
     handler(event: SocketEventName, data: SocketEventData): void;
@@ -24,10 +24,13 @@ export function BCMSSocketHandler(security: SecurityPrototype) {
         return await new Promise<void>((resolve, reject) => {
           try {
             const signature = security.sign({});
-            socket = io(server.url, {
+            socket = SocketIO(server.url, {
               path: server.path,
               query: {
-                ...signature,
+                timestamp: '' + signature.timestamp,
+                signature: signature.signature,
+                key: signature.key,
+                nonce: signature.nonce,
               },
               autoConnect: false,
             });
@@ -59,24 +62,6 @@ export function BCMSSocketHandler(security: SecurityPrototype) {
                 });
               });
             });
-            // [
-            //   'user',
-            //   'template',
-            //   'language',
-            //   'group',
-            //   'widget',
-            //   'entry',
-            //   'media',
-            //   'apiKey',
-            //   'plugin',
-            //   'entryChange',
-            // ].forEach((e) => {
-            //   socket.on(e, (data) => {
-            //     handlers.forEach((handler) => {
-            //       handler.handler(e, data);
-            //     });
-            //   });
-            // });
           } catch (error) {
             reject(error);
           }
